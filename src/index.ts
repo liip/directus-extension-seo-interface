@@ -11,11 +11,11 @@ export default defineInterface({
 	component: InterfaceComponent,
 	group: 'relational',
 	relational: true,
-	options: ({collection, relations}) => {
+	options: ({ collection }) => {
 		const fieldsStore = useStores().useFieldsStore();
-		const seoCollection = relations.m2o?.related_collection;
+		const SEO_COLLECTION = 'seo';
 
-		const fields = fieldsStore.getFieldsForCollection(seoCollection)
+		const fields = fieldsStore.getFieldsForCollection(SEO_COLLECTION)
 		.filter(field => !field.meta?.hidden)
 		.map(field => {
 			return {
