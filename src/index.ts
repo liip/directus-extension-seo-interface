@@ -16,7 +16,7 @@ export default defineInterface({
 		const SEO_COLLECTION = 'seo';
 
 		const fields = fieldsStore.getFieldsForCollection(SEO_COLLECTION)
-		.filter(field => !field.meta?.hidden)
+		.filter(field => !field.meta?.hidden && field.meta?.interface === 'input')
 		.map(field => {
 			return {
 				field: field.field,
