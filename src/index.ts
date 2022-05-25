@@ -11,9 +11,13 @@ export default defineInterface({
 	component: InterfaceComponent,
 	group: 'relational',
 	relational: true,
-	options: ({ collection }) => {
+	options: ({ collection, relations }) => {
 		const fieldsStore = useStores().useFieldsStore();
 		const SEO_COLLECTION = 'seo';
+
+		if (relations.m2o) {
+			relations.m2o.related_collection = SEO_COLLECTION;
+		}
 
 		const fields = fieldsStore.getFieldsForCollection(SEO_COLLECTION)
 		.filter(field => !field.meta?.hidden && field.meta?.interface === 'input')
