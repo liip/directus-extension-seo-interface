@@ -11,32 +11,30 @@ export default defineInterface({
 	component: InterfaceComponent,
 	group: 'relational',
 	relational: true,
-	options: ({ collection, relations }) => {
+	options: ({ collection }) => {
 		const fieldsStore = useStores().useFieldsStore();
 		const SEO_COLLECTION = 'seo';
+		const fallbackFields = ['title', 'description', 'image'];
 
-		if (relations.m2o) {
-			relations.m2o.related_collection = SEO_COLLECTION;
-		}
-
-		const fields = fieldsStore.getFieldsForCollection(SEO_COLLECTION)
-		.filter(field => !field.meta?.hidden && field.field === 'title' || field.field === 'description' || field.field === 'image')
-		.map(field => {
-			return {
-				field: field.field,
-				type: 'string',
-				name: field.name,
-				meta: {
-					width: 'full',
-					interface: 'system-display-template',
-					required: false,
-					options: {
-						collectionName: collection,
-						font: 'monospace',
+		const fields = fieldsStore
+			.getFieldsForCollection(SEO_COLLECTION)
+			.filter((field) => !field.meta?.hidden && fallbackFields.includes(field.field))
+			.map((field) => {
+				return {
+					field: field.field,
+					type: 'string',
+					name: field.name,
+					meta: {
+						width: 'full',
+						interface: 'system-display-template',
+						required: false,
+						options: {
+							collectionName: collection,
+							font: 'monospace',
+						},
 					},
-				},
-			};
-		});
+				};
+			});
 
 		return fields;
 	},
