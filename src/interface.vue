@@ -1,6 +1,4 @@
 <template>
-  {{value}}
-  {{internalValue}}
 	<div style="margin: 20px">
 		<v-form
 			:fields="seoFields"
@@ -15,7 +13,7 @@
 
 <script setup lang="ts">
 import { useStores, useApi } from '@directus/extensions-sdk';
-import {computed, ref, watch} from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const props = withDefaults(
 	defineProps<{
@@ -52,13 +50,12 @@ const seoFields = computed(() => {
 });
 
 const getSeoValues = async (id) => {
-  console.log('here', id);
-  const response = await api.get(`/items/${relatedCollection.collection}/${id}`)
-  return response.data?.data || emptyValue.value;
+	const response = await api.get(`/items/${relatedCollection.collection}/${id}`);
+	return response.data?.data || emptyValue.value;
 };
 
 const updateInternalValue = (item, edited = true) => {
-  internalValue.value = { ...emptyValue.value, ...item, edited: edited };
+	internalValue.value = { ...emptyValue.value, ...item, edited: edited };
 };
 
 const emptyValue = computed(() => {
@@ -73,14 +70,13 @@ const emptyValue = computed(() => {
 
 const initial = ref(emptyValue.value);
 
-watch(internalValue, async (newValue, oldValue) => {
-  console.log(newValue)
-  if (!newValue || Number(newValue) !== newValue) {
-    return;
-  }
+watch(internalValue, async (newValue) => {
+	if (!newValue || Number(newValue) !== newValue) {
+		return;
+	}
 
-  initial.value = await getSeoValues(newValue);
-  // Replace value with the loaded entry
-  updateInternalValue(initial.value);
+	initial.value = await getSeoValues(newValue);
+	// Replace value with the loaded entry
+	updateInternalValue(initial.value);
 });
 </script>
